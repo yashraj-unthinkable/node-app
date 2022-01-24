@@ -10,7 +10,7 @@ COPY ["node-app/package.json", "node-app/package-lock.json", "./"]
 
 RUN npm install --production
 
-COPY [".node-app/", "."]
+COPY ["node-app/", "."]
 
 CMD ["node", "index.js"]
 
