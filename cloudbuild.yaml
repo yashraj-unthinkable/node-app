@@ -1,0 +1,21 @@
+steps:
+# step - 0
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone', 'https://github.com/yashrajdighe/node-app.git']
+# step - 1
+- name: "gcr.io/cloud-builders/npm"
+  args: ["install"]
+# step - 2
+- name: "gcr.io/cloud-builders/docker"
+  args: ["build", "-t", "gcr.io/unified-spider-268211/hello-node:latest", ".", "-f", "node-app/Dockerfile"]
+# step - 3
+- name: "gcr.io/cloud-builders/docker"
+  args: ["push", "gcr.io/unified-spider-268211/hello-node:latest"]
+# step - 4 deploy container image to GKE
+- name: "gcr.io/cloud-builders/gke-deploy"
+  args:
+  - run
+  - --filename=node-deployment.yaml
+  - --image=gcr.io/unified-spider-268211/hello-node:latest
+  - --location=us-central1-c
+  - --cluster=node-deploy
