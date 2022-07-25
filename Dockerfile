@@ -1,16 +1,18 @@
-# syntax=docker/dockerfile:1
+FROM alpine:latest
 
-FROM node:12
+RUN apk add --update nodejs npm
 
-ENV NODE_ENV=production
+RUN addgroup -S node && adduser -S node -G node
 
-WORKDIR /app
+USER node
 
-COPY ["package.json", "package-lock.json", "./"]
+WORKDIR /home/node
 
-RUN npm install --production
+COPY --chown=node:node package-lock.json package.json ./
 
-COPY [".", "."]
+RUN npm i
 
-CMD ["node", "index.js"]
+COPY --chown=node:node . .
+
+EXPOSE 3000
 
