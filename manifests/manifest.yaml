@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-node-app-deployment
+  name: basic-node-app
   labels:
-    app: my-node-app
+    app: basic-node-app
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: my-node-app
+      app: basic-node-app
   template:
     metadata:
       labels:
-        app: my-node-app
+        app: basic-node-app
     spec:
       containers:
-      - name: my-node-app
-        image: yashrajdighe/node-deploy:V2
+      - name: basic-node-app
+        image: yashrajdighe/basic-node-app:V1.0
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
@@ -24,13 +24,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-node-app-service
+  name: basic-node-app
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
-    app: my-node-app
+    app: basic-node-app
   ports:
     - protocol: TCP
       port: 3000
-      targetPort: 3000
-      nodePort: 31111
